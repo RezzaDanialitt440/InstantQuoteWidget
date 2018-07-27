@@ -10,7 +10,7 @@
 $(document).ready(function(){
     $("button").click(function(){
 
-
+      // ====== DATA DECLARATION AND INITIALIZATION ======
       // var INPUTpickupLocation = document.getElementById("pickupLocation").value;
       var INPUTpickupZipcode = document.getElementById("pickupZipcode").value;
       var INPUTpickupCountry = "MY";
@@ -20,28 +20,34 @@ $(document).ready(function(){
       var INPUTweight = document.getElementById("weight").value;
       var INPUTitemType = document.getElementById("itemType").value;
 
+        // ====== POST REQUEST ======
+
         $.post("https://api.matdespatch.com/api/services/check",
         {
-          // pickupLocation : INPUTpickupZipcode,
-          // pickupZipcode : INPUTpickupZipcode,
-          // pickupCountry : INPUTpickupCountry,
-          // dropLocation : INPUTdropZipcode,
-          // dropZipcode : INPUTdropZipcode,
-          // dropCountry : INPUTdropCountry,
-          // deliveryItemType : INPUTitemType,
-          // deliveryWeight : INPUTweight
+          // ====== DYNAMIC INPUT ======
+         pickupLocation : INPUTpickupZipcode,
+         pickupZipcode : INPUTpickupZipcode,
+         pickupCountry : INPUTpickupCountry,
+         dropLocation : INPUTdropZipcode,
+         dropZipcode : INPUTdropZipcode,
+         dropCountry : INPUTdropCountry,
+         deliveryItemType : INPUTitemType,
+         deliveryWeight : INPUTweight
 
-          pickupLocation : "53100",
-          pickupZipcode : "53100",
-          pickupCountry : "MY",
-          dropLocation : "40450",
-          dropZipcode : "40450",
-          dropCountry : "MY",
-          deliveryItemType : "PARCEL",
-          deliveryWeight : "1.0"
+      //  ====== STATIC INPUT ======
+      //    pickupLocation : "14120",
+      //    pickupZipcode : "14120",
+      //    pickupCountry : "MY",
+      //    dropLocation : "40450",
+      //    dropZipcode : "40450",
+      //    dropCountry : "MY",
+      //    deliveryItemType : "PARCEL",
+      //    deliveryWeight : "1.0"
         },
         function(data){
             console.log(data);
+
+            // ====== CONDITION TO SHOW RESULT DIV (200 means request succeed) ======
 
             if (data.status_code == 200) {
                   document.getElementById("result").style.visibility = "visible"
@@ -57,151 +63,92 @@ $(document).ready(function(){
           });
         });
 
-
+  // ====== PRINT DATA INTO DOM ======
               function printResult(data){
 
-              var animalContainer = document.getElementById("animal-info");
+              var resultContainer = document.getElementById("result-info");
               var htmlString = "";
 
               for (i=0; i<data.services.length; i++) {
-
               htmlString += "<div class='col-md-12'><h3>" + data.services[i].serviceTitle + "</h3><br><p>" + data.services[i].serviceDescription + "</p></div><br><div class='row'><div class='col-md-6 col-xs-6 col-sm-6'><h4>Total Price:" + data.services[i].servicePrice + "</h4></div><div class='col-md-6 col-xs-6 col-sm-6'><a id='bookButton' href='https://app.matdespatch.com/customer/sign-in' target='_blank' class='btn btn-success book'>Book Now</a></div></div>"
+              }
+              resultContainer.insertAdjacentHTML('beforeend',htmlString);
+              }
+      });
+    </script>
+  </head>
 
-
-
-              // title = "Service Title = " + data.services[i].serviceTitle;
-              // desc = "Service Description = " + data.services[i].serviceDescription;
-              // price = "Total Price: " + data.services[i].servicePrice;
-
-
-                  }
-
-              animalContainer.insertAdjacentHTML('beforeend',htmlString);
-            }
-
-            // document.getElementById("title").innerHTML = data.services[0].serviceTitle;
-            // document.getElementById("desc").innerHTML = data.services[0].serviceDescription;
-            // document.getElementById("price").innerHTML = ("Total Price: " + data.services[0].servicePrice);
-
-
-});
-</script>
-
-</head>
-
-<body>
-<div class="widget">
-<div class="row">
-<div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
-  <h3 class="text-center nogap">
-    Instant Quote
-  </h3>
-  </div>
-</div>
-  <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
-    <form role="form">
-      <div class="form-group">
-        <label for="pickUpLocation">
-          From
-        </label>
-        <input id="pickupZipcode" placeholder="Enter zipcode" type="number" class="form-control gap" name="pickupZipcode required="true"">
+  <body>
+    <!-- ====== INPUT FORM ====== -->
+      <div class="widget">
+      <div class="row">
+      <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+        <h3 class="text-center nogap">
+          Instant Quote
+        </h3>
+        </div>
       </div>
-      </form>
-      <!-- <p id="output1"></p> -->
-  </div>
-  <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
-    <form role="form">
-      <div class="form-group">
-        <label for="dropLocation">
-          To
-        </label>
-        <input id="dropZipcode" placeholder="Enter zipcode" type="number" class="form-control gap" name="dropZipcode">
-      </div>
-      <!-- </form> -->
-  </div>
-  <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
-      <div class="form-group">
-        <label for="exampleFormControlSelect1">Type:</label>
-        <select class="form-control" id="itemType">
-        <option value="" disabled selected>Type of Item</option>
-        <option value="DOCUMENT" >Documents</option>
-        <option value="PARCEL">Parcel</option>
-        <option value="FOOD">Food</option>
-        <option value="FLOWER">Flower</option>
-        <option value="CHILL">Chill</option>
-        <option value="FROZEN">Frozen</option>
-        <option value="CAKE">Cake</option>
-        <option value="BULK">Bulky Package</option>
-        <option value="OTHER">Others</option>
-        <option value="TASK/RUNNER">Task / Runner</option>
-        </select>
-      </div>
-  </div>
-  <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
-    <form role="form">
-      <div class="form-group">
-        <label for="Weight">
-          Weight:
-        </label>
-        <input id="weight" placeholder="in Kilogram" type="number" class="form-control" name="weight" step="0.5" min="0">
-      </div>
-      </form>
-  </div>
-  <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
-    <form role="form">
-      <button id="getQuoteBtn" type="button" class="btn pink">
-     Quote
-      </button>
-      </form>
-    </div>
-  </div>
-  <p id="message" class="validate"></p>
+        <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+          <form role="form">
+            <div class="form-group">
+              <label for="pickUpLocation">
+                From
+              </label>
+              <input id="pickupZipcode" placeholder="Enter zipcode" type="number" class="form-control gap" name="pickupZipcode required="true"">
+            </div>
+            </form>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+          <form role="form">
+            <div class="form-group">
+              <label for="dropLocation">
+                To
+              </label>
+              <input id="dropZipcode" placeholder="Enter zipcode" type="number" class="form-control gap" name="dropZipcode">
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Type:</label>
+              <select class="form-control" id="itemType">
+              <option value="" disabled selected>Type of Item</option>
+              <option value="DOCUMENT" >Documents</option>
+              <option value="PARCEL">Parcel</option>
+              <option value="FOOD">Food</option>
+              <option value="FLOWER">Flower</option>
+              <option value="CHILL">Chill</option>
+              <option value="FROZEN">Frozen</option>
+              <option value="CAKE">Cake</option>
+              <option value="BULK">Bulky Package</option>
+              <option value="OTHER">Others</option>
+              <option value="TASK/RUNNER">Task / Runner</option>
+              </select>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+          <form role="form">
+            <div class="form-group">
+              <label for="Weight">
+                Weight:
+              </label>
+              <input id="weight" placeholder="in Kilogram" type="number" class="form-control" name="weight" step="0.5" min="0">
+            </div>
+            </form>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+          <form role="form">
+            <button id="getQuoteBtn" type="button" class="btn pink">
+           Quote
+            </button>
+            </form>
+          </div>
+        </div>
+        <p id="message" class="validate"></p>
 
-  <!-- <h1 id="message"></h1>
-  <h1 id="title"></h1>
-  <h3 id="desc"></h3>
-  <h1 id="price"></h1> -->
+      <!-- ====== DOM ====== -->
+        <div  id="result" class="container-fluid result">
+          <div class="" id="result-info"></div>
+        </div>
 
-  <div  id="result" class="container-fluid result">
-
-    <div class="border" id="animal-info">
-
-    </div>
-
-	<!-- <div class="row">
-		<div class="col-md-12">
-			<h3 id="title">
-			</h3>
-			<p id="desc">
-			</p>
-			<div class="row">
-				<div class="col-md-6 col-xs-6 col-sm-6">
-					<h3 id="price">
-					</h3>
-				</div>
-				<div class="col-md-6 col-xs-6 col-sm-6">
-					<a id="bookButton" href="https://app.matdespatch.com/customer/sign-in" target="_blank"class="btn btn-success book">Book Now</a>
-				</div>
-			</div>
-		</div>
-	</div> -->
-
-</div>
-
-
-</body>
-<!-- <script type="text/javascript">
-function hideShowButton(){
-  if {
-
-      document.getElementById(bookButton).style.display = 'none';
-  }
-    else {
-      document.getElementById(bookButton).style.display = 'block';
-    }
-} -->
-
-
-</script>
-
+  </body>
 </html>
